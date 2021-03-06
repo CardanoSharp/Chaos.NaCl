@@ -19,5 +19,16 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             for (i = 0; i < 32; ++i) sk[skoffset + 32 + i] = pk[pkoffset + i];
             CryptoBytes.Wipe(h);
         }
+
+        public static void crypto_get_pubkey(byte[] pk, byte[] sk)
+        {
+            GroupElementP3 A;
+            int i;
+
+            GroupOperations.ge_scalarmult_base(out A, sk, 0);
+            GroupOperations.ge_p3_tobytes(pk, 0, ref A);
+
+            for (i = 0; i < 32; ++i) sk[32 + i] = pk[i];
+        }
     }
 }

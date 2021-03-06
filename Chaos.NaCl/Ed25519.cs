@@ -88,6 +88,13 @@ namespace Chaos.NaCl
             expandedPrivateKey = sk;
         }
 
+        public static byte[] GetPublicKey(byte[] expandedPrivateKey)
+        {
+            var pk = new byte[PublicKeySizeInBytes];
+            Ed25519Operations.crypto_get_pubkey(pk, expandedPrivateKey);
+            return pk;
+        }
+
         public static void KeyPairFromSeed(ArraySegment<byte> publicKey, ArraySegment<byte> expandedPrivateKey, ArraySegment<byte> privateKeySeed)
         {
             if (publicKey.Array == null)
