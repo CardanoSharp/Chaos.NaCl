@@ -90,8 +90,10 @@ namespace Chaos.NaCl
 
         public static byte[] GetPublicKey(byte[] expandedPrivateKey)
         {
+            var sk = new byte[expandedPrivateKey.Length];
+            Buffer.BlockCopy(expandedPrivateKey, 0, sk, 0, expandedPrivateKey.Length);
             var pk = new byte[PublicKeySizeInBytes];
-            Ed25519Operations.crypto_get_pubkey(pk, expandedPrivateKey);
+            Ed25519Operations.crypto_get_pubkey(pk, sk);
             return pk;
         }
 
