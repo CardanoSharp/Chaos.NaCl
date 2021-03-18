@@ -95,6 +95,13 @@ namespace Chaos.NaCl
             return pk;
         }
 
+        public static byte[] PointPlus(byte[] p1, byte[] p2) 
+        {
+            var pp = new byte[PublicKeySizeInBytes];
+            Ed25519Operations.crypto_point_plus(p1, p2, pp);
+            return pp;
+        }
+
         public static void KeyPairFromSeed(ArraySegment<byte> publicKey, ArraySegment<byte> expandedPrivateKey, ArraySegment<byte> privateKeySeed)
         {
             if (publicKey.Array == null)
