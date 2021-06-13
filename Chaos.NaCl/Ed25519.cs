@@ -35,7 +35,7 @@ namespace Chaos.NaCl
             return Ed25519Operations.crypto_sign_verify(signature, 0, message, 0, message.Length, publicKey, 0);
         }
 
-        public static void Sign(ArraySegment<byte> signature, ArraySegment<byte> message, ArraySegment<byte> expandedPrivateKey)
+        public static void Sign(ArraySegment<byte> signature, ArraySegment<byte> message, ArraySegment<byte> expandedPrivateKey, bool useDefault = true)
         {
             if (signature.Array == null)
                 throw new ArgumentNullException("signature.Array");
@@ -47,13 +47,23 @@ namespace Chaos.NaCl
                 throw new ArgumentException("expandedPrivateKey.Count");
             if (message.Array == null)
                 throw new ArgumentNullException("message.Array");
-            Ed25519Operations.crypto_sign2(signature.Array, signature.Offset, message.Array, message.Offset, message.Count, expandedPrivateKey.Array, expandedPrivateKey.Offset);
+            if(useDefault)
+                Ed25519Operations.crypto_sign2(signature.Array, signature.Offset, message.Array, message.Offset, message.Count, expandedPrivateKey.Array, expandedPrivateKey.Offset);
+            else
+                Ed25519Operations.crypto_sign3(signature.Array, message.Array, expandedPrivateKey.Array);
         }
 
         public static byte[] Sign(byte[] message, byte[] expandedPrivateKey)
         {
             var signature = new byte[SignatureSizeInBytes];
             Sign(new ArraySegment<byte>(signature), new ArraySegment<byte>(message), new ArraySegment<byte>(expandedPrivateKey));
+            return signature;
+        }
+
+        public static byte[] SignCrypto(byte[] message, byte[] expandedPrivateKey)
+        {
+            var signature = new byte[SignatureSizeInBytes];
+            Sign(new ArraySegment<byte>(signature), new ArraySegment<byte>(message), new ArraySegment<byte>(expandedPrivateKey), false);
             return signature;
         }
 

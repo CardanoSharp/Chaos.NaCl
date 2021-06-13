@@ -77,5 +77,55 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 				CryptoBytes.Wipe(s);
 			}
 		}
-	}
+
+        public static void crypto_sign3(
+            byte[] sig, byte[] m, byte[] sk)
+        {
+            byte[] r;
+            byte[] hram;
+            GroupElementP3 R;
+            GroupElementP3 A;
+            var hasher = new Sha512();
+            {
+                hasher.Init();
+                hasher.Update(sk, 32, 32);
+                hasher.Update(m);
+                r = hasher.Finish();
+                ScalarOperations.sc_reduce(r);
+
+                var s1 = new byte[32];
+                GroupOperations.ge_scalarmult_base(out R, r, 0);
+                GroupOperations.ge_p3_tobytes(s1, 0, ref R);
+                Array.Copy(s1, 0, sig, 0, 32);
+
+                var pk = new byte[32];
+                GroupOperations.ge_scalarmult_base(out A, sk, 0);
+                GroupOperations.ge_p3_tobytes(pk, 0, ref A);
+                Array.Copy(pk, 0, sig, 32, 32);
+
+                hasher.Init();
+                hasher.Update(sig);
+                hasher.Update(m);
+                hram = hasher.Finish();
+
+                ScalarOperations.sc_reduce(hram);
+                var s2 = new byte[32];//todo: remove allocation
+                var sk1 = new byte[32];//todo: remove allocation
+                var r1 = new byte[32];//todo: remove allocation
+                var hram1 = new byte[32];//todo: remove allocation
+                Array.Copy(sig, 32, s2, 0, 32);
+                Array.Copy(hram, 0, hram1, 0, 32);
+                Array.Copy(sk, 0, sk1, 0, 32);
+                Array.Copy(r, 0, r1, 0, 32);
+
+                ScalarOperations.sc_muladd(s2, hram1, sk1, r1);
+                Array.Copy(s2, 0, sig, 32, 32);
+                CryptoBytes.Wipe(r1);
+                CryptoBytes.Wipe(s1);
+                CryptoBytes.Wipe(s2);
+                CryptoBytes.Wipe(sk1);
+                CryptoBytes.Wipe(hram1);
+            }
+        }
+    }
 }
