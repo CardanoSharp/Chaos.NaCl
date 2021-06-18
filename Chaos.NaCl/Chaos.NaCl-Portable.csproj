@@ -3,6 +3,6 @@
   <PropertyGroup>
     <RootNamespace>Chaos.NaCl</RootNamespace>
     <AssemblyName>Chaos.NaCl-Portable</AssemblyName>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
   </PropertyGroup>
 </Project>

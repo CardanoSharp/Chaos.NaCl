@@ -89,7 +89,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             {
                 hasher.Init();
                 hasher.Update(sk, 32, 32);
-                hasher.Update(m);
+                hasher.Update(m, 0, m.Length);
                 r = hasher.Finish();
                 ScalarOperations.sc_reduce(r);
 
@@ -104,8 +104,8 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
                 Array.Copy(pk, 0, sig, 32, 32);
 
                 hasher.Init();
-                hasher.Update(sig);
-                hasher.Update(m);
+                hasher.Update(sig, 0, sig.Length);
+                hasher.Update(m, 0, m.Length);
                 hram = hasher.Finish();
 
                 ScalarOperations.sc_reduce(hram);
