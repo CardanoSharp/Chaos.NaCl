@@ -4,6 +4,11 @@
     <RootNamespace>Chaos.NaCl</RootNamespace>
     <AssemblyName>Chaos.NaCl-Portable</AssemblyName>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>CardanoSharp.Chaos</PackageId>
+    <Authors>CardanoSharp</Authors>
+    <Company>CardanoSharp</Company>
+    <Product>CardanoSharp.Chaos</Product>
     <Version>0.1.0</Version>
   </PropertyGroup>
 </Project>
