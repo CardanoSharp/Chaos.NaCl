@@ -4,5 +4,6 @@
     <RootNamespace>Chaos.NaCl</RootNamespace>
     <AssemblyName>Chaos.NaCl-Portable</AssemblyName>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 </Project>
